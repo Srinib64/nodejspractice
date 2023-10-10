@@ -33,7 +33,7 @@ app.get("/players/", async (request, response) => {
     SELECT
     *
     FROM
-    cricketTeam`;
+    cricket_team`;
   const cricket = await db.all(getPlayersQuery);
   response.send(cricket);
 });
@@ -44,7 +44,7 @@ app.post("/players/", async (request, response) => {
   const { playerName, jerseyNumber, role } = playerDetails;
   const addPlayerQuery = `
   INSERT INTO
-  cricketTeam (playerName,jerseyNumber,role)
+  cricket_team (playerName,jerseyNumber,role)
   VALUES
   (
       '${playerName}',
@@ -55,47 +55,47 @@ app.post("/players/", async (request, response) => {
 });
 
 //API 3
-app.get("/players/:playersId/", async (request, response) => {
-  const { playersId } = request.params;
+app.get("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
   const getPlayerQuery = `
     SELECT
       *
     FROM
-      cricketTeam
+      cricket_team
     WHERE
-      playerId = ${playersId};`;
+      playerId = ${playerId};`;
   const player = await db.get(getPlayerQuery);
   response.send(player);
 });
 
 //API 4
-app.put("/players/:playersId/", async (request, response) => {
-  const { playersId } = request.params;
+app.put("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
   const playersDetails = request.body;
   const { playerName, jerseyNumber, role } = playersDetails;
   const updatePlayerQuery = `
     UPDATE
-      cricketTeam
+      cricket_team
     SET
       playerName='${playerName}',
       jerseyNumber=${jerseyNumber},
-      role=${role},
+      role=${role}
     WHERE
-      playersId = ${playersId};`;
+      playerId = ${playerId};`;
   await db.run(updatePlayerQuery);
   response.send("Player Details Updated");
 });
 
 //API5
-app.delete("/players/:playersId/", async (request, response) => {
-  const { playersId } = request.params;
+app.delete("/players/:playerId/", async (request, response) => {
+  const { playerId } = request.params;
   const deletePlayerQuery = `
     DELETE FROM
-      book
+      cricket_team
     WHERE
-      playersId = ${playersId};`;
+      playerId = ${playerId};`;
   await db.run(deletePlayerQuery);
   response.send("Player Removed");
 });
 
-module.exports = app();
+module.exports = app;
